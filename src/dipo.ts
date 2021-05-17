@@ -3,7 +3,7 @@ import { DipoEvent } from './event';
 import { Handler, HandlerReturn } from './handler';
 
 export class Dipo<E extends { [key: string]: Context }, D extends Context> {
-    private handlers: Handler[] = [];
+    private handlers: Handler<D>[] = [];
 
     constructor(
         private events: {
@@ -15,12 +15,21 @@ export class Dipo<E extends { [key: string]: Context }, D extends Context> {
         this.events[event] = handler;
     }
 
-    on<T extends keyof E>(event: T, handler: Handler<E[T]>) {
-        this.use(this.events[event](handler));
+    middleware<T extends Context = Context>(
+        handler: Handler<D>,
+    ): Dipo<{ [P in keyof E]: T & E[P] }, D> {
+        this.handlers.push(handler);
+        return this as any as Dipo<{ [P in keyof E]: T & E[P] }, D>;
     }
 
-    use(handler: Handler) {
+    on<T extends keyof E>(event: T, handler: Handler<E[T]>): Dipo<E, D> {
+        this.use(this.events[event](handler));
+        return this;
+    }
+
+    use(handler: Handler<D>): Dipo<E, D> {
         this.handlers.push(handler);
+        return this;
     }
 
     handle(context: D) {

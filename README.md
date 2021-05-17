@@ -57,3 +57,34 @@ ctx.photo = '1';
 ctx.text = '1';
 dipo.handle(ctx)
 ```
+
+## Middleware
+```typescript
+type session = {
+    id: number;
+};
+type ContextSession<session> =  {
+    session: session;
+} & Context;
+
+dipo.middleware<ContextSession>(() => {})
+    .on('text', (ctx) => {
+        let id = ctx.session.id;
+    })
+    .on('text', (ctx) => {});
+```
+or
+```typescript
+type session = {
+    id: number;
+};
+type ContextSession<session> =  {
+    session: session;
+} & Context;
+
+let dipoSession = dipo.middleware<ContextSession>(() => {})
+dipoSession.on('text', (ctx) => {
+        let id = ctx.session.id;
+    })
+dipoSession.on('text', (ctx) => {});
+```
