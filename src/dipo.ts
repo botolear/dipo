@@ -16,10 +16,10 @@ export class Dipo<E extends { [key: string]: Context }, D extends Context> {
     }
 
     middleware<T extends Context = Context>(
-        handler: Handler<D>,
-    ): Dipo<{ [P in keyof E]: T & E[P] }, D> {
+        handler: Handler<Partial<T> & D>,
+    ): Dipo<{ [P in keyof E]: T & E[P] }, T & D> {
         this.handlers.push(handler);
-        return this as any as Dipo<{ [P in keyof E]: T & E[P] }, D>;
+        return this as any as Dipo<{ [P in keyof E]: T & E[P] }, T & D>;
     }
 
     on<T extends keyof E>(event: T, handler: Handler<E[T]>): Dipo<E, D> {
