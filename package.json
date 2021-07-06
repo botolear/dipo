@@ -1,6 +1,6 @@
 {
     "name": "@botol/dipo",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "build/index.js",
     "license": "MIT",
     "private": false,
@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/le-ar/botol-dipo"
+        "url": "https://github.com/botolear/dipo"
     },
     "keywords": [
         "dipo",
